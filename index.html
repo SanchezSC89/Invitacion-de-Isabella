@@ -223,7 +223,19 @@
             .hero-section { background-attachment: fixed; }
         }
 
-    </style>
+    
+/* CAMBIO REALIZADO POR CHATGPT:
+   Ajuste específico para que la imagen del fondo en la última sección
+   no se vea gigante en iPhone */
+@media (max-width: 768px) {
+    .rsvp-section {
+        background-size: contain !important;
+        background-repeat: no-repeat;
+        background-position: center top;
+    }
+}
+
+</style>
 </head>
 <body>
 
@@ -700,6 +712,26 @@ function setRealVh() {
 }
 setRealVh();
 window.addEventListener('resize', setRealVh);
+</script>
+
+
+<script>
+/* CAMBIO REALIZADO POR CHATGPT:
+   Pausar música cuando la pestaña pierde visibilidad
+   y reanudar cuando vuelve */
+document.addEventListener("visibilitychange", () => {
+    const audio = document.getElementById("audioPlayer");
+    const btn = document.getElementById("playPauseBtn");
+    if (!audio) return;
+
+    if (document.hidden) {
+        audio.pause();
+        if(btn) btn.innerHTML = '<i class="fas fa-play"></i>';
+    } else {
+        audio.play().catch(()=>{});
+        if(btn) btn.innerHTML = '<i class="fas fa-pause"></i>';
+    }
+});
 </script>
 
 </body>
