@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- CAMBIO REALIZADO POR CHATGPT: Viewport optimizado para compatibilidad total con iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Invitación especial - Te esperamos en nuestro evento">
+    <title>¡Estás Invitado!</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Montserrat:wght@300;400;500;600;700&family=Ubuntu:wght@300;400;500;700&family=Butterfly+Kids&family=Henny+Penny&family=Bubblegum+Sans&display=swap" rel="stylesheet">
+    
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ==========================================
+           VARIABLES CSS GLOBALES
+           Definición de paleta de colores y fuentes
+           ========================================== */
+        :root {
+            --color-azul-principal: #4A90E2;
+            --color-azul-oscuro: #2C5F8D;
+            --color-azul-claro: #7BB3FF;
+            --color-rosado-principal: #FF6B9D;
+            --color-rosado-oscuro: #E94B7B;
+            --color-rosado-claro: #FFB3D1;
+            --color-blanco: #FFFFFF;
+            --color-negro: #2C2C2C;
+            --color-gris-claro: #F5F5F5;
+            --color-whatsapp: #25D366;
+            --color-whatsapp-dark: #128C7E;
+            
+            --fuente-titulos: 'Playfair Display', serif;
+            --fuente-cuerpo: 'Montserrat', sans-serif;
+            --fuente-decorativa: 'Bubblegum Sans', cursive;
+            
+            --sombra-suave: 0 4px 15px rgba(0,0,0,0.1);
+            --sombra-media: 0 8px 25px rgba(0,0,0,0.15);
+            --sombra-fuerte: 0 15px 40px rgba(0,0,0,0.2);
+        }
+        
+        /* Reset y Estilos Base */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--fuente-cuerpo); color: var(--color-negro); background-color: var(--color-gris-claro); overflow-x: hidden; line-height: 1.6; }
+        
+        /* ==========================================
+           PANTALLA DE BIENVENIDA (SPLASH SCREEN)
+           ========================================== */
+        .splash-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: linear-gradient(135deg, var(--color-azul-claro) 0%, var(--color-rosado-claro) 100%); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 1s ease-out, visibility 1s; }
+        .splash-screen.hidden { opacity: 0; visibility: hidden; }
+        
+        /* Decoración de Globos Animados */
+        .balloons-container { position: absolute; width: 100%; height: 100%; overflow: hidden; top: 0; left: 0; }
+        .balloon { position: absolute; width: 80px; height: 100px; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; transition: all 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); animation: float 3s ease-in-out infinite; }
+        .balloon::after { content: ''; position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%); width: 2px; height: 30px; background: rgba(0,0,0,0.2); }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        
+        /* Animaciones de salida de globos */
+        .balloon.move-left { transform: translateX(-150vw) rotate(-45deg); opacity: 0; }
+        .balloon.move-right { transform: translateX(150vw) rotate(45deg); opacity: 0; }
+        
+        .splash-content { position: relative; z-index: 10; text-align: center; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); padding: 3rem; border-radius: 30px; border: 2px solid rgba(255, 255, 255, 0.3); box-shadow: var(--sombra-fuerte); }
+        .open-invitation-btn { background: var(--color-blanco); color: var(--color-azul-oscuro); border: none; padding: 1.2rem 2.5rem; font-size: 1.3rem; font-family: var(--fuente-titulos); font-weight: 700; border-radius: 50px; cursor: pointer; box-shadow: var(--sombra-media); transition: all 0.3s ease; }
+        .open-invitation-btn:hover { transform: translateY(-5px) scale(1.05); background: var(--color-azul-principal); color: white; }
+        .invitation-icon { font-size: 3.5rem; color: var(--color-blanco); margin-bottom: 1.5rem; animation: pulseIcon 2s infinite; }
+        @keyframes pulseIcon { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.8; } }
+        .splash-subtitle { margin-top: 1.5rem; font-size: 1.8rem; color: var(--color-blanco); font-family: var(--fuente-decorativa); }
+
+        /* ==========================================
+           SECCIÓN HERO (PORTADA)
+           ========================================== */
+        .hero-section { height: 100vh; display: flex; align-items: center; justify-content: center; background-size: cover; background-position: center; background-attachment: fixed; position: relative; overflow: hidden; }
+        .hero-section::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.4)); z-index: 1; }
+        .hero-content { position: relative; z-index: 2; text-align: center; color: var(--color-blanco); padding: 2rem; max-width: 800px; }
+        .hero-title { font-family: var(--fuente-titulos); font-size: clamp(3rem, 10vw, 6rem); font-weight: 800; margin-bottom: 1rem; text-shadow: 3px 3px 15px rgba(0,0,0,0.6); line-height: 1.1; }
+        .hero-subtitle { font-size: clamp(1.5rem, 5vw, 3rem); font-family: var(--fuente-decorativa); text-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
+        
+        /* ==========================================
+           ESTILOS GENERALES DE SECCIONES
+           ========================================== */
+        .section { padding: 6rem 1.5rem; position: relative; }
+        .container { max-width: 1100px; margin: 0 auto; }
+        .section-title { font-family: var(--fuente-titulos); font-size: clamp(2.5rem, 6vw, 4rem); text-align: center; margin-bottom: 3.5rem; color: var(--color-azul-oscuro); position: relative; }
+        .section-title::after { content: ''; display: block; width: 80px; height: 5px; background: linear-gradient(90deg, var(--color-azul-principal), var(--color-rosado-principal)); margin: 1.5rem auto 0; border-radius: 5px; }
+
+        /* ==========================================
+           SECCIÓN CUENTA REGRESIVA
+           ========================================== */
+        .countdown-section { background: linear-gradient(135deg, var(--color-azul-principal) 0%, var(--color-rosado-principal) 100%); color: var(--color-blanco); text-align: center; }
+        .countdown-section .section-title { color: var(--color-blanco); }
+        .countdown-section .section-title::after { background: var(--color-blanco); }
+        .countdown-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; max-width: 600px; margin: 0 auto; }
+        @media (min-width: 768px) { .countdown-grid { grid-template-columns: repeat(4, 1fr); } }
+        .countdown-item { background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(5px); padding: 2rem 1rem; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: var(--sombra-media); transition: transform 0.3s ease; }
+        .countdown-item:hover { transform: translateY(-10px); background: rgba(255, 255, 255, 0.3); }
+        .countdown-number { display: block; font-size: 3.5rem; font-weight: 800; font-family: var(--fuente-titulos); line-height: 1; margin-bottom: 0.5rem; }
+        .countdown-label { font-size: 1rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }
+
+        /* ==========================================
+           SECCIÓN UBICACIÓN
+           ========================================== */
+        .location-section { background-color: var(--color-blanco); }
+        .location-card { background: var(--color-gris-claro); border-radius: 30px; overflow: hidden; box-shadow: var(--sombra-media); display: flex; flex-direction: column; }
+        @media (min-width: 992px) { .location-card { flex-direction: row; } }
+        .location-info { padding: 3rem; flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        .location-icon { font-size: 3rem; color: var(--color-rosado-principal); margin-bottom: 1.5rem; }
+        .location-name { font-family: var(--fuente-titulos); font-size: 2rem; color: var(--color-azul-oscuro); margin-bottom: 1rem; }
+        .location-address { font-size: 1.1rem; margin-bottom: 2rem; color: #666; max-width: 400px; }
+        .map-buttons { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; }
+        .map-btn { padding: 1rem 2rem; border-radius: 50px; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 10px; transition: all 0.3s ease; box-shadow: var(--sombra-suave); }
+        .map-btn.google { background-color: #4285F4; color: white; }
+        .map-btn.waze { background-color: #33CCFF; color: white; }
+        .map-btn:hover { transform: translateY(-3px); box-shadow: var(--sombra-media); opacity: 0.9; }
+        .map-container { flex: 1; min-height: 400px; position: relative; }
+        .map-container iframe { width: 100%; height: 100%; border: 0; min-height: 400px; }
+
+        /* ==========================================
+           SECCIÓN MÚSICA [MEJORA 3: BARRA DE PROGRESO]
+           ========================================== */
+        .music-section { background: linear-gradient(135deg, var(--color-rosado-claro) 0%, var(--color-blanco) 100%); }
+        .music-player-card { max-width: 700px; margin: 0 auto; background: var(--color-blanco); border-radius: 30px; padding: 2.5rem; box-shadow: var(--sombra-media); display: flex; flex-direction: column; align-items: center; gap: 2rem; }
+        @media (min-width: 768px) { .music-player-card { flex-direction: row; text-align: left; } }
+        .music-thumbnail-container { position: relative; width: 180px; height: 180px; flex-shrink: 0; }
+        .music-thumbnail { width: 100%; height: 100%; border-radius: 25px; object-fit: cover; box-shadow: var(--sombra-media); border: 5px solid var(--color-rosado-claro); }
+        .music-details { flex-grow: 1; width: 100%; }
+        .music-title { font-family: var(--fuente-titulos); font-size: 1.8rem; color: var(--color-azul-oscuro); margin-bottom: 0.5rem; }
+        .music-subtitle { color: #888; margin-bottom: 1.5rem; font-weight: 500; }
+        .music-controls { display: flex; align-items: center; gap: 1.5rem; margin-top: 1rem; }
+        .play-pause-btn { width: 65px; height: 65px; border-radius: 50%; background: var(--color-rosado-principal); color: white; border: none; font-size: 1.5rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; box-shadow: var(--sombra-media); }
+        .play-pause-btn:hover { transform: scale(1.1); background: var(--color-rosado-oscuro); }
+
+        .progress-container { width: 100%; margin-top: 1.5rem; }
+        .progress-bar-wrapper { position: relative; width: 100%; height: 10px; background: #eee; border-radius: 10px; cursor: pointer; display: flex; align-items: center; }
+        .progress-fill { position: absolute; height: 100%; background: var(--color-azul-principal); border-radius: 10px; z-index: 1; transition: width 0.1s linear; }
+        .progress-input { position: absolute; width: 100%; height: 10px; -webkit-appearance: none; background: transparent; cursor: pointer; z-index: 2; margin: 0; outline: none; }
+        .progress-input::-webkit-slider-thumb { -webkit-appearance: none; height: 20px; width: 20px; border-radius: 50%; background: var(--color-rosado-principal); border: 3px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: transform 0.2s; }
+        .progress-input::-webkit-slider-thumb:hover { transform: scale(1.3); }
+        .time-info { display: flex; justify-content: space-between; margin-top: 8px; font-size: 0.85rem; color: var(--color-azul-oscuro); font-weight: 700; }
+
+        /* ========================================================
+           SECCIÓN CONFIRMACIÓN (RSVP) - MEJORA 4 (Hecha por Gemini)
+           ======================================================== */
+        .rsvp-section { 
+            background-size: cover; 
+            background-position: center; 
+            background-attachment: fixed; 
+            position: relative; 
+            overflow: hidden;
+        }
+
+        .rsvp-section::before { 
+            content: ''; 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.4)); 
+            z-index: 1; 
+        }
+
+        .rsvp-container { 
+            position: relative; 
+            z-index: 2; 
+            max-width: 650px; 
+            margin: 0 auto; 
+            background: var(--color-blanco); 
+            padding: 3rem; 
+            border-radius: 30px; 
+            box-shadow: var(--sombra-media); 
+            border-top: 8px solid var(--color-azul-principal); 
+        }
+
+        .warning-container {
+            display: none; /* Oculto por defecto */
+            background-color: var(--color-rosado-claro);
+            color: var(--color-rosado-oscuro);
+            padding: 1rem;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            border: 2px solid var(--color-rosado-principal);
+            font-weight: 700;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group { margin-bottom: 1.8rem; }
+        .form-label { display: block; margin-bottom: 0.7rem; font-weight: 600; color: var(--color-azul-oscuro); font-size: 1.1rem; }
+        .form-control { width: 100%; padding: 1.2rem; border: 2px solid #ddd; border-radius: 15px; font-family: inherit; font-size: 1rem; transition: all 0.3s ease; }
+        .form-control:focus { outline: none; border-color: var(--color-azul-principal); box-shadow: 0 0 10px rgba(74, 144, 226, 0.2); }
+        .row-form { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        @media (max-width: 576px) { .row-form { grid-template-columns: 1fr; } }
+        .btn-submit { width: 100%; padding: 1.2rem; background: var(--color-whatsapp); color: white; border: none; border-radius: 50px; font-size: 1.2rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; transition: all 0.3s ease; box-shadow: var(--sombra-media); margin-top: 1rem; }
+        .btn-submit:hover { background: var(--color-whatsapp-dark); transform: translateY(-3px); box-shadow: var(--sombra-fuerte); }
+        .btn-submit:disabled { background: #ccc; cursor: not-allowed; transform: none; opacity: 0.7; }
+        
+        .footer { text-align: center; padding: 2rem 1rem; background: var(--color-azul-oscuro); color: white; position: relative; z-index: 2;}
+        .footer-text { font-family: var(--fuente-decorativa); font-size: 1.5rem; margin-bottom: 1rem; }
+    
+        /* ==========================================
+           CAMBIOS REALIZADOS POR CHATGPT - COMPATIBILIDAD iOS
+           ========================================== */
+
+        /* Evita escalado automático de texto en Safari iOS */
+        html { -webkit-text-size-adjust: 100%; }
+
+        /* Previene imágenes gigantes en iPhone */
+        img { max-width: 100%; height: auto; display: block; }
+
+        /* Viewport dinámico real para iOS */
+        :root { --vh: 1vh; }
+
+        /* Reemplazo de 100vh problemático en iOS */
+        .hero-section { height: calc(var(--vh) * 100); background-attachment: scroll; }
+
+        /* Solo activar fixed en dispositivos compatibles */
+        @media (hover: hover) and (pointer: fine) {
+            .hero-section { background-attachment: fixed; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <script>
+        /* ======================================================
+           CONFIGURACIÓN - MEJORA 4 (Etiqueta imagenFondoFormulario)
+           ====================================================== */
+        const CONFIG_USUARIO = {
+            imagenPrincipal: 'https://res.cloudinary.com/ddyoepidx/image/upload/v1770692448/Imagen_1_en0isd.jpg',
+            imagenFondoFormulario: 'https://res.cloudinary.com/ddyoepidx/image/upload/v1770692479/Imagen_2_z7uspy.jpg', // Agregado por Gemini
+            videoYouTube: 'https://www.youtube.com/watch?v=JXOTmWl5t3A',
+            archivoMP3: 'https://files.catbox.moe/j1p6ha.mp3',
+            numeroWhatsApp: '525520593267'
+        };
+
+        const CONFIG_EVENTO = {
+            nombreEvento: "Cumpleaños de Sofia",
+            fecha: "2026-03-01T10:45:00",
+            tituloHero: "¡Te esperamos!",
+            subtituloHero: "Domingo 01 de Marzo a partir de las 10:45 am. a 4 pm.",
+            lugar: {
+                nombre: "Salón de Fiestas PLANETA 8",
+                direccion: "Libramiento Sur Poniente $27315, Plaza San Marcos, Querétaro,Qro. México",
+                latitud: 19.432608,
+                longitud: -99.133209
+            }
+        };
+    </script>
+
+    <div class="splash-screen" id="splashScreen">
+        <div class="balloons-container" id="balloonsContainer"></div>
+        <div class="splash-content">
+            <div class="invitation-icon"><i class="fas fa-envelope-open-text"></i></div>
+            <button class="open-invitation-btn" id="openInvitationBtn">Abrir Invitación</button>
+            <p class="splash-subtitle">Haz clic para entrar</p>
+        </div>
+    </div>
+
+    <section class="hero-section" id="inicio">
+        <div class="hero-content" data-aos="zoom-in">
+            <h1 class="hero-title" id="heroTitle">Cargando...</h1>
+            <p class="hero-subtitle" id="heroSubtitle">Te esperamos con alegría</p>
+        </div>
+    </section>
+
+    <section class="countdown-section section">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up" id="countdownTitleText">Solo Faltan unos cuantos dias para festejar</h2>
+            <!-- Mensaje personalizado agregado por Claude -->
+            <div id="countdownMessage" style="display: none; text-align: center; font-size: 1.5rem; padding: 2rem; background: rgba(255,255,255,0.1); border-radius: 20px; margin: 2rem auto; max-width: 600px; backdrop-filter: blur(10px);"></div>
+            <div class="countdown-grid" data-aos="fade-up" data-aos-delay="200" id="countdownGrid">
+                <div class="countdown-item"><span class="countdown-number" id="days">00</span><span class="countdown-label">Días</span></div>
+                <div class="countdown-item"><span class="countdown-number" id="hours">00</span><span class="countdown-label">Hrs</span></div>
+                <div class="countdown-item"><span class="countdown-number" id="minutes">00</span><span class="countdown-label">Min</span></div>
+                <div class="countdown-item"><span class="countdown-number" id="seconds">00</span><span class="countdown-label">Seg</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="location-section section" id="donde">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">¿Dónde será?</h2>
+            <div class="location-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="location-info">
+                    <div class="location-icon"><i class="fas fa-map-marked-alt"></i></div>
+                    <h3 class="location-name" id="locationName"></h3>
+                    <p class="location-address" id="locationAddress"></p>
+                    <div class="map-buttons">
+                        <a href="#" id="googleMapsBtn" class="map-btn google" target="_blank"><i class="fas fa-location-dot"></i> Google Maps</a>
+                        <a href="#" id="wazeBtn" class="map-btn waze" target="_blank"><i class="fab fa-waze"></i> Waze</a>
+                    </div>
+                </div>
+                <div class="map-container">
+                    <iframe id="mapIframe" loading="lazy"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="music-section section" id="musica">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">Nuestra tematica sera de:</h2>
+            <div class="music-player-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="music-thumbnail-container">
+                    <img src="" id="musicThumbnail" class="music-thumbnail" alt="Canción">
+                </div>
+                <div class="music-details">
+                    <h3 class="music-title" id="musicTitle">Cargando canción...</h3>
+                    <p class="music-subtitle">¡Disfruta el ritmo de mi fiesta!</p>
+                    
+                    <div class="music-controls">
+                        <button class="play-pause-btn" id="playPauseBtn">
+                            <i class="fas fa-play"></i>
+                        </button>
+                    </div>
+
+                    <div class="progress-container">
+                        <div class="progress-bar-wrapper">
+                            <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+                            <input type="range" class="progress-input" id="progressInput" value="0" min="0" max="100" step="0.1">
+                        </div>
+                        <div class="time-info">
+                            <span id="currentTime">0:00</span>
+                            <span id="durationTime">0:00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <audio id="audioPlayer" loop></audio>
+        </div>
+    </section>
+
+    <section class="rsvp-section section" id="confirmar">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up" style="position:relative; z-index:2; color: white;" id="rsvpTitleText">Confirma tu Asistencia</h2>
+            <div class="rsvp-container" data-aos="fade-up" data-aos-delay="200" id="rsvpContainer">
+                
+                <div id="guestWarning" class="warning-container">
+                    <i class="fas fa-triangle-exclamation"></i>
+                    <span>El total de niños y adultos no puede superar el número total de 4 invitados.</span>
+                </div>
+
+                <form id="rsvpForm">
+                    <div class="form-group">
+                        <label class="form-label">Nombre Completo</label>
+                        <input type="text" id="guestName" class="form-control" placeholder="Escribe tu nombre aquí" required>
+                    </div>
+                    
+                    <div class="row-form">
+                        <div class="form-group">
+                            <label class="form-label">Número de Adultos</label>
+                            <select id="numAdults" class="form-control">
+                                <option value="1">1 Adulto</option><option value="2">2 Adultos</option>
+                                <option value="3">3 Adultos</option><option value="4">4 Adultos</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Número de Niños</label>
+                            <select id="numChildren" class="form-control">
+                                <option value="0">Sin niños</option><option value="1">1 Niño</option>
+                                <option value="2">2 Niños</option><option value="3">3 Niños</option><option value="4">4 Niños</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">¿Algún mensaje o alergia?</label>
+                        <textarea id="guestMessage" class="form-control" rows="3" placeholder="Opcional: Ejemplo: Soy alérgico al maní..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-submit" id="submitBtn">
+                        <i class="fab fa-whatsapp"></i> Enviar por WhatsApp
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-text">¡Será un placer verte ese día!</p>
+            <p>© 2026 - Diseñada por: Samuel Sánchez</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Inicializar Animaciones
+        AOS.init({ duration: 1000, once: true });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            generarGlobos();
+            inicializarDatos();
+            manejarReproductorMusica();
+            manejarRSVP();
+            iniciarReloj();
+            manejarSplash();
+            inicializarMejora4(); // Invocación de las mejoras de Gemini
+        });
+
+        // ========== MANEJO DEL SPLASH SCREEN ==========
+        function manejarSplash() {
+            const splash = document.getElementById('splashScreen');
+            const openBtn = document.getElementById('openInvitationBtn');
+            const audio = document.getElementById('audioPlayer');
+            const playPauseBtn = document.getElementById('playPauseBtn');
+
+            openBtn.addEventListener('click', () => {
+                audio.play().then(() => {
+                    playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                }).catch(e => console.log("Auto-play prevenido"));
+
+                document.querySelectorAll('.balloon').forEach((b, i) => {
+                    b.classList.add(i % 2 === 0 ? 'move-left' : 'move-right');
+                });
+
+                setTimeout(() => {
+                    splash.classList.add('hidden');
+                    document.body.style.overflow = 'auto';
+                }, 800);
+            });
+            document.body.style.overflow = 'hidden';
+        }
+
+        // ========== GENERACIÓN DE GLOBOS ==========
+        function generarGlobos() {
+            const container = document.getElementById('balloonsContainer');
+            const colores = ['#4A90E2', '#FF6B9D', '#7BB3FF', '#FFB3D1', '#FFFFFF'];
+            for (let i = 0; i < 20; i++) {
+                const b = document.createElement('div');
+                b.className = 'balloon';
+                b.style.left = Math.random() * 95 + '%';
+                b.style.top = Math.random() * 100 + '%';
+                b.style.backgroundColor = colores[Math.floor(Math.random() * colores.length)];
+                b.style.animationDelay = Math.random() * 2 + 's';
+                b.style.opacity = '0.7';
+                container.appendChild(b);
+            }
+        }
+
+        // ========== CARGA DE DATOS E INTERFAZ ==========
+        function inicializarDatos() {
+            document.getElementById('heroTitle').textContent = CONFIG_EVENTO.tituloHero;
+            document.getElementById('heroSubtitle').textContent = CONFIG_EVENTO.subtituloHero;
+            document.getElementById('inicio').style.backgroundImage = `url('${CONFIG_USUARIO.imagenPrincipal}')`;
+            
+            const u = CONFIG_EVENTO.lugar;
+            document.getElementById('locationName').textContent = u.nombre;
+            document.getElementById('locationAddress').textContent = u.direccion;
+            const lugarCompleto = encodeURIComponent(u.nombre + ', ' + u.direccion);
+
+            document.getElementById('googleMapsBtn').href = `https://www.google.com/maps/dir/?api=1&destination=${lugarCompleto}`;
+
+            // ────────────────────────────────────────────────────────────────────────────────
+            // SOLUCIÓN POR GROK (Mejora10 - febrero 2026)
+            // Problema anterior: waze:// abre ventana en blanco en desktop/navegador web.
+            // Causa: esquema waze:// no está registrado en computadoras (solo en móviles).
+            // Solución: volver a https://waze.com/ul (universal link oficial de Waze).
+            // Esto abre app en móvil (si instalada) y web/live-map en desktop.
+            // Se conserva q= con nombre + dirección para mostrar "PLANETA 8..." como título.
+            // No se modificó NADA más (ni CSS, ni funciones, ni textos, ni estructura).
+            document.getElementById('wazeBtn').href = `https://waze.com/ul?q=${encodeURIComponent("PLANETA 8, Libramiento Sur Poniente #27315, Plaza San Marcos, Santiago de Querétaro, Qro., México")}&navigate=yes`;
+            // ────────────────────────────────────────────────────────────────────────────────
+
+            document.getElementById('mapIframe').src = `https://maps.google.com/maps?q=${encodeURIComponent(u.nombre + ', ' + u.direccion)}&z=15&output=embed`;
+        }
+
+        /* ====================================================================
+           MEJORA 4: LÓGICA DE VALIDACIÓN Y FONDO DINÁMICO (Hecha por Gemini)
+           ==================================================================== */
+        function inicializarMejora4() {
+            const rsvpSection = document.getElementById('confirmar');
+            const numAdults = document.getElementById('numAdults');
+            const numChildren = document.getElementById('numChildren');
+            const warning = document.getElementById('guestWarning');
+            const submitBtn = document.getElementById('submitBtn');
+
+            // 1. Aplicar imagen de fondo desde CONFIG_USUARIO
+            if(CONFIG_USUARIO.imagenFondoFormulario) {
+                rsvpSection.style.backgroundImage = `url('${CONFIG_USUARIO.imagenFondoFormulario}')`;
+            }
+
+            // 2. Lógica de conteo máximo (4 invitados)
+            function validarLimite() {
+                const total = parseInt(numAdults.value) + parseInt(numChildren.value);
+                if (total > 4) {
+                    warning.style.display = 'flex'; // Mostrar advertencia
+                    submitBtn.disabled = true;      // Bloquear botón
+                } else {
+                    warning.style.display = 'none';  // Ocultar advertencia
+                    // No habilitamos ciegamente si ya confirmó previamente (se respeta lógica RSVP)
+                    if (!localStorage.getItem(`confirmacion_${CONFIG_EVENTO.nombreEvento}`)) {
+                        submitBtn.disabled = false;
+                    }
+                }
+            }
+
+            // Escuchar cambios en los selectores
+            numAdults.addEventListener('change', validarLimite);
+            numChildren.addEventListener('change', validarLimite);
+        }
+
+        // ========== MANEJO DE MÚSICA CON PROGRESO ==========
+        function manejarReproductorMusica() {
+            const audio = document.getElementById('audioPlayer');
+            const playPauseBtn = document.getElementById('playPauseBtn');
+            const progressInput = document.getElementById('progressInput');
+            const progressFill = document.getElementById('progressFill');
+            const currentTimeEl = document.getElementById('currentTime');
+            const durationTimeEl = document.getElementById('durationTime');
+            
+            audio.src = CONFIG_USUARIO.archivoMP3;
+
+            const videoId = CONFIG_USUARIO.videoYouTube.split('v=')[1]?.split('&')[0];
+            if (videoId) {
+                document.getElementById('musicThumbnail').src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+                fetch(`https://noembed.com/embed?url=${CONFIG_USUARIO.videoYouTube}`)
+                    .then(res => res.json())
+                    .then(data => document.getElementById('musicTitle').textContent = data.title);
+            }
+
+            playPauseBtn.addEventListener('click', () => {
+                if (audio.paused) {
+                    audio.play();
+                    playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                } else {
+                    audio.pause();
+                    playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+                }
+            });
+
+            audio.addEventListener('timeupdate', () => {
+                const percent = (audio.currentTime / audio.duration) * 100;
+                progressInput.value = percent || 0;
+                progressFill.style.width = (percent || 0) + '%';
+                currentTimeEl.textContent = formatearTiempo(audio.currentTime);
+            });
+
+            audio.addEventListener('loadedmetadata', () => {
+                durationTimeEl.textContent = formatearTiempo(audio.duration);
+            });
+
+            progressInput.addEventListener('input', () => {
+                audio.currentTime = (progressInput.value / 100) * audio.duration;
+            });
+
+            function formatearTiempo(segundos) {
+                const min = Math.floor(segundos / 60);
+                const seg = Math.floor(segundos % 60);
+                return `${min}:${seg < 10 ? '0' : ''}${seg}`;
+            }
+        }
+
+        // ========== CUENTA REGRESIVA CON LÓGICA DE DECISIONES ==========
+        // IMPLEMENTADO POR CLAUDE - Mejora 7
+        function iniciarReloj() {
+            aplicarLogicaDeDecisiones(); // Aplicar lógica primero
+            
+            const target = new Date(CONFIG_EVENTO.fecha).getTime();
+            const intervalo = setInterval(() => {
+                const now = new Date().getTime();
+                const diff = target - now;
+                
+                // Contador hacia adelante (evento ya pasó)
+                if (diff <= 0) {
+                    const diffPasado = now - target;
+                    document.getElementById('days').textContent = String(Math.floor(diffPasado / (1000 * 60 * 60 * 24))).padStart(2, '0');
+                    document.getElementById('hours').textContent = String(Math.floor((diffPasado % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+                    document.getElementById('minutes').textContent = String(Math.floor((diffPasado % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+                    document.getElementById('seconds').textContent = String(Math.floor((diffPasado % (1000 * 60)) / 1000)).padStart(2, '0');
+                } else {
+                    // Contador regresivo normal
+                    document.getElementById('days').textContent = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
+                    document.getElementById('hours').textContent = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+                    document.getElementById('minutes').textContent = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+                    document.getElementById('seconds').textContent = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
+                }
+            }, 1000);
+        }
+
+        // ========== LÓGICA DE DECISIONES ==========
+        // CORREGIDO POR CLAUDE - Mejora 7
+        function aplicarLogicaDeDecisiones() {
+            const now = new Date().getTime();
+            const target = new Date(CONFIG_EVENTO.fecha).getTime();
+            const eventoPaso = now > target;
+            const nombreGuardado = localStorage.getItem(`confirmacion_${CONFIG_EVENTO.nombreEvento}`);
+            
+            // Elementos de la sección COUNTDOWN
+            const countdownMessage = document.getElementById('countdownMessage');
+            const countdownGrid = document.getElementById('countdownGrid');
+            
+            // Elementos de la sección CONFIRMACIÓN (RSVP)
+            const rsvpTitleText = document.getElementById('rsvpTitleText');
+            const rsvpContainer = document.getElementById('rsvpContainer');
+            
+            // ============================================
+            // CASO 1: EL EVENTO YA PASÓ
+            // ============================================
+            if (eventoPaso) {
+                // Siempre mostrar el contador (con tiempo que ya pasó)
+                countdownGrid.style.display = 'grid';
+                
+                if (nombreGuardado) {
+                    // ===== SUBCASO 1A: Evento pasó + Hay nombre =====
+                    // En COUNTDOWN: Mostrar mensaje de agradecimiento
+                    countdownMessage.style.display = 'block';
+                    countdownMessage.innerHTML = `<i class="fas fa-heart" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i><h3>¡Gracias por acompañarnos ${nombreGuardado}!</h3>`;
+                    
+                    // En CONFIRMACIÓN: Ocultar TODO el contenedor y cambiar título
+                    rsvpContainer.style.display = 'none';
+                    rsvpTitleText.textContent = 'Tu presencia hizo que este día fuera inolvidable';
+                } else {
+                    // ===== SUBCASO 1B: Evento pasó + NO hay nombre =====
+                    // En COUNTDOWN: Mostrar mensaje de finalización
+                    countdownMessage.style.display = 'block';
+                    countdownMessage.innerHTML = `<i class="fas fa-calendar-times" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i><h3>El evento ha finalizado</h3>`;
+                    
+                    // En CONFIRMACIÓN: Ocultar TODO el contenedor y cambiar título
+                    rsvpContainer.style.display = 'none';
+                    rsvpTitleText.textContent = '¡Esperamos que puedas asistir a mi próxima fiesta, estate al pendiente!';
+                }
+            } 
+            // ============================================
+            // CASO 2: EL EVENTO NO HA PASADO
+            // ============================================
+            else {
+                // Siempre mostrar el contador regresivo
+                countdownGrid.style.display = 'grid';
+                
+                if (nombreGuardado) {
+                    // ===== SUBCASO 2A: Evento NO pasó + Hay nombre =====
+                    // En COUNTDOWN: Mostrar mensaje de confirmación
+                    countdownMessage.style.display = 'block';
+                    countdownMessage.innerHTML = `<i class="fas fa-check-circle" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i><h3>¡Hola ${nombreGuardado}, ya confirmaste!</h3>`;
+                    
+                    // En CONFIRMACIÓN: Ocultar TODO el contenedor y cambiar título
+                    rsvpContainer.style.display = 'none';
+                    rsvpTitleText.textContent = 'Te esperamos el día de la fiesta, No faltes';
+                } else {
+                    // ===== SUBCASO 2B: Evento NO pasó + NO hay nombre =====
+                    // En COUNTDOWN: NO mostrar mensaje personalizado
+                    countdownMessage.style.display = 'none';
+                    
+                    // En CONFIRMACIÓN: Mostrar contenedor completo con título normal
+                    rsvpContainer.style.display = 'block';
+                    rsvpTitleText.textContent = 'Confirma tu Asistencia';
+                }
+            }
+        }
+
+        // ========== FORMULARIO RSVP ==========
+        // MODIFICADO POR CLAUDE - Mejora 7: Guardar ANTES de WhatsApp
+        function manejarRSVP() {
+            const form = document.getElementById('rsvpForm');
+            const submitBtn = document.getElementById('submitBtn');
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const nombre = document.getElementById('guestName').value;
+                const adultos = document.getElementById('numAdults').value;
+                const ninos = document.getElementById('numChildren').value;
+                const mensaje = document.getElementById('guestMessage').value;
+                const total = parseInt(adultos) + parseInt(ninos);
+
+                // CAMBIO POR CLAUDE: Guardar en localStorage ANTES de abrir WhatsApp
+                localStorage.setItem(`confirmacion_${CONFIG_EVENTO.nombreEvento}`, nombre);
+                
+                let texto = `¡Hola! Confirmo mi asistencia 🎉%0A%0A`;
+                texto += `👤 *Nombre:* ${encodeURIComponent(nombre)}%0A`;
+                texto += `👥 *Total:* ${total} persona(s)%0A`;
+                texto += `👨‍👩‍👧‍👦 *Adultos:* ${adultos} | *Niños:* ${ninos}%0A`;
+                if (mensaje) texto += `💬 *Mensaje:* ${encodeURIComponent(mensaje)}%0A`;
+                
+                // Abrir WhatsApp
+                window.open(`https://api.whatsapp.com/send?phone=${CONFIG_USUARIO.numeroWhatsApp}&text=${texto}`, '_blank');
+                
+                // Reaplicar lógica de decisiones para actualizar la UI
+                aplicarLogicaDeDecisiones();
+            });
+            
+            // Aplicar lógica inicial si ya hay confirmación previa
+            if (localStorage.getItem(`confirmacion_${CONFIG_EVENTO.nombreEvento}`)) {
+                aplicarLogicaDeDecisiones();
+            }
+        }
+    </script>
+
+<script>
+/* CAMBIO REALIZADO POR CHATGPT:
+   Corrección dinámica de altura real del viewport en iOS */
+function setRealVh() {
+    document.documentElement.style.setProperty('--vh', window.innerHeight * 0.01 + 'px');
+}
+setRealVh();
+window.addEventListener('resize', setRealVh);
+</script>
+
+</body>
+</html>
