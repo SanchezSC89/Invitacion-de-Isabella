@@ -229,9 +229,21 @@
    no se vea gigante en iPhone */
 @media (max-width: 768px) {
     .rsvp-section {
-        background-size: contain !important;
+        background-size: cover !important;
         background-repeat: no-repeat;
         background-position: center top;
+    }
+}
+
+
+/* CAMBIO REALIZADO POR CHATGPT:
+   SOLUCIÓN DEFINITIVA iOS — imagen de la última sección
+   mantiene proporción y ocupa alto correcto */
+@media (max-width: 768px) {
+    .rsvp-section {
+        background-size: cover !important;
+        background-position: center;
+        background-repeat: no-repeat;
     }
 }
 
