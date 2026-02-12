@@ -519,6 +519,10 @@
             // 1. Aplicar imagen de fondo desde CONFIG_USUARIO
             if(CONFIG_USUARIO.imagenFondoFormulario) {
                 rsvpSection.style.backgroundImage = `url('${CONFIG_USUARIO.imagenFondoFormulario}')`;
+                /* CORRECCIÓN APLICADA POR CLAUDE: Safari iOS no soporta background-attachment: fixed */
+                if(/Safari|iPhone|iPad|iPod/i.test(navigator.userAgent) && !/Chrome/i.test(navigator.userAgent)) {
+                    rsvpSection.style.backgroundAttachment = 'scroll';
+                }
             }
 
             // 2. Lógica de conteo máximo (4 invitados)
